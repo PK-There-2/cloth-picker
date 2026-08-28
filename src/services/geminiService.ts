@@ -126,7 +126,7 @@ export async function analyzeClothingImage(
   }
 
   const prompt = `
-    You are Kaya's professional closet scanner. 
+    You are Persona's professional closet scanner. 
     Analyze this clothing item image and classify its details into a structured JSON configuration.
     JSON format:
     {
@@ -140,6 +140,48 @@ export async function analyzeClothingImage(
     Return ONLY raw JSON block. No markdown markers.
   `;
 
+  try {
+    // We will simulate file upload format since the backend expects multipart/form-data
+    // For now we pass base64 directly to our existing callGemini fallback
+    // Or we could implement standard formData conversion here
+    // But since `callGemini` is already robust, we'll keep it as fallback
+    // and attempt backend call:
+    
+    // Convert base64 back to Blob to send as FormData to FastAPI
+    const cleanBase64 = imageBase64.includes(',') ? imageBase64.split(',')[1] : imageBase64;
+    const byteCharacters = atob(cleanBase64);
+    const byteNumbers = new Array(byteCharacters.length);
+    for (let i = 0; i < byteCharacters.length; i++) {
+        byteNumbers[i] = byteCharacters.charCodeAt(i);
+    }
+    const byteArray = new Uint8Array(byteNumbers);
+    const blob = new Blob([byteArray], { type: 'image/jpeg' });
+    
+    const formData = new FormData();
+    formData.append('image', blob, 'upload.jpg');
+    formData.append('context', prompt);
+    
+    const baseUrl = import.meta.env.VITE_API_BASE_URL || 'http://localhost:8000';
+    const res = await fetch(`${baseUrl}/api/vision/photo-search`, {
+      method: 'POST',
+      body: formData
+    });
+    
+    if (res.ok) {
+        const data = await res.json();
+        // The backend returns a dynamic caption, but we need JSON here.
+        // We can parse the caption if the backend was prompted for JSON, or fallback.
+        try {
+            return JSON.parse(data.caption) as AnalyzedMeta;
+        } catch(e) {
+            console.error("JSON parse error from backend, falling back", e);
+        }
+    }
+  } catch (error) {
+    console.error("FastAPI Backend Error:", error);
+  }
+
+  // Fallback to existing logic if backend fails or doesn't return JSON
   const raw = await callGemini(prompt, imageBase64, 'image/jpeg', true);
   return JSON.parse(raw) as AnalyzedMeta;
 }
@@ -175,7 +217,7 @@ export async function generateOutfit(
   }));
 
   const prompt = `
-    You are Kaya, a world-class celebrity stylist and wardrobe curator.
+    You are Persona, a world-class celebrity stylist and wardrobe curator.
     Evaluate this user's wardrobe collection: ${JSON.stringify(serializableInventory)}
     Evaluate their unique styling metrics:
     - Silhouette Structure: ${profile.bodyType}
@@ -240,7 +282,7 @@ Relaxed fits in premium fabrics. Linen, soft knits, and suede. Comfort meets sop
   }
 
   const prompt = `
-    You are Kaya, a high-fashion stylist advisory board.
+    You are Persona, a high-fashion stylist advisory board.
     Generate a fully customized, ultra-luxury aesthetic styling report for this client metrics:
     - Tall/Height: ${profile.height} cm
     - Body Structure Archetype: ${profile.bodyType}
@@ -259,7 +301,7 @@ Relaxed fits in premium fabrics. Linen, soft knits, and suede. Comfort meets sop
 }
 
 /**
- * Chat with the Kaya style assistant.
+ * Chat with the Persona style assistant.
  */
 export async function chatWithStylist(
   userMessage: string,
@@ -281,7 +323,7 @@ export async function chatWithStylist(
   }
 
   const systemPrompt = `
-    You are Kaya, a luxury personal fashion stylist chatbot.
+    You are Persona, a luxury personal fashion stylist chatbot.
     Current Client Metrics:
     - Silhouette: ${profile.bodyType}
     - Skin Palette: ${profile.skinTone}
@@ -296,5 +338,21 @@ export async function chatWithStylist(
     User Stylist Request: ${userMessage}
   `;
 
-  return callGemini(prompt);
+  try {
+    const baseUrl = import.meta.env.VITE_API_BASE_URL || 'http://localhost:8000';
+    const res = await fetch(`${baseUrl}/api/chat/message`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ 
+        message: prompt, 
+        user_preferences: JSON.stringify(profile) 
+      })
+    });
+    const data = await res.json();
+    return data.reply || "I'm sorry, I couldn't process that request.";
+  } catch (error) {
+    console.error("FastAPI Backend Error:", error);
+    // Fallback if backend is down
+    return callGemini(prompt);
+  }
 }
