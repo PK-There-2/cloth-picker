@@ -45,7 +45,7 @@ const AdviceTab: React.FC<AdviceTabProps> = ({ profile, setProfile, showToast, o
     <div className="space-y-8 animate-fadeIn">
       <div className="p-6 rounded-2xl bg-stone-900/30 border border-stone-800/60">
         <h3 className="text-lg font-bold mb-1">Your Style Parameters</h3>
-        <p className="text-xs text-stone-400 mb-6">Persona reads these dimensions to custom-fit AI outfit generators and layout formulations.</p>
+        <p className="text-xs text-stone-400 mb-6">Kaya reads these dimensions to custom-fit AI outfit generators and layout formulations.</p>
         <form onSubmit={handleUpdateProfile} className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
           <SelectField label="Silhouette Type" value={profile.bodyType} onChange={(v) => update('bodyType', v)} options={[
             { value: 'Rectangle', label: 'Rectangle (Even Top & Bottom)' },

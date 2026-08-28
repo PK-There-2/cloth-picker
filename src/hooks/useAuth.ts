@@ -9,9 +9,9 @@ interface AuthState {
 
 /** Fake user object for demo mode */
 const DEMO_USER = {
-  uid: 'demo-user-001',
-  email: 'demo@persona.app',
-  displayName: 'Demo User',
+  uid: 'guest',
+  email: 'demo@kaya.app',
+  displayName: 'Guest User',
 } as unknown as User;
 
 /**

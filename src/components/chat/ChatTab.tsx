@@ -10,7 +10,7 @@ interface ChatTabProps {
 
 const INITIAL_MESSAGE: ChatMessage = {
   role: 'assistant',
-  text: 'Hi! I am Persona, your personal AI Stylist. Ask me anything about what to wear, styling rules, or suggestions for your next event.',
+  text: 'Hi! I am Kaya, your personal AI Stylist. Ask me anything about what to wear, styling rules, or suggestions for your next event.',
 };
 
 const QUICK_PROMPTS = [
@@ -80,7 +80,7 @@ const ChatTab: React.FC<ChatTabProps> = ({ items, profile }) => {
           <div className="w-2.5 h-2.5 rounded-full bg-emerald-500 animate-pulse" />
           <div>
             <h3 className="text-xs font-bold uppercase tracking-widest text-stone-200">
-              Persona Style Assistant
+              Kaya Style Assistant
             </h3>
             <p className="text-[10px] text-stone-400 font-light">
               Interactive advice built using items currently in your closet

@@ -47,7 +47,7 @@ const OutfitGenerator: React.FC<OutfitGeneratorProps> = ({
     <div className="p-8 rounded-2xl bg-gradient-to-br from-stone-900 to-stone-950 border border-stone-800/60 shadow-2xl relative">
       <div className="absolute top-4 right-4 text-amber-500 opacity-20"><SparklesIcon /></div>
       <h3 className="text-xl font-bold mb-1">Generate Curated Looks</h3>
-      <p className="text-xs text-stone-400 mb-6">Persona matches colors, fabrics, and fit variables from your registered closet inventory database.</p>
+      <p className="text-xs text-stone-400 mb-6">Kaya matches colors, fabrics, and fit variables from your registered closet inventory database.</p>
       <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
         <div>
           <label className="text-[10px] text-stone-400 uppercase tracking-widest block mb-2 font-semibold">Target Event / Occasion</label>

@@ -126,7 +126,7 @@ export async function analyzeClothingImage(
   }
 
   const prompt = `
-    You are Persona's professional closet scanner. 
+    You are Kaya's professional closet scanner. 
     Analyze this clothing item image and classify its details into a structured JSON configuration.
     JSON format:
     {
@@ -175,7 +175,7 @@ export async function generateOutfit(
   }));
 
   const prompt = `
-    You are Persona, a world-class celebrity stylist and wardrobe curator.
+    You are Kaya, a world-class celebrity stylist and wardrobe curator.
     Evaluate this user's wardrobe collection: ${JSON.stringify(serializableInventory)}
     Evaluate their unique styling metrics:
     - Silhouette Structure: ${profile.bodyType}
@@ -240,7 +240,7 @@ Relaxed fits in premium fabrics. Linen, soft knits, and suede. Comfort meets sop
   }
 
   const prompt = `
-    You are Persona, a high-fashion stylist advisory board.
+    You are Kaya, a high-fashion stylist advisory board.
     Generate a fully customized, ultra-luxury aesthetic styling report for this client metrics:
     - Tall/Height: ${profile.height} cm
     - Body Structure Archetype: ${profile.bodyType}
@@ -259,7 +259,7 @@ Relaxed fits in premium fabrics. Linen, soft knits, and suede. Comfort meets sop
 }
 
 /**
- * Chat with the Persona style assistant.
+ * Chat with the Kaya style assistant.
  */
 export async function chatWithStylist(
   userMessage: string,
@@ -281,7 +281,7 @@ export async function chatWithStylist(
   }
 
   const systemPrompt = `
-    You are Persona, a luxury personal fashion stylist chatbot.
+    You are Kaya, a luxury personal fashion stylist chatbot.
     Current Client Metrics:
     - Silhouette: ${profile.bodyType}
     - Skin Palette: ${profile.skinTone}
