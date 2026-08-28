@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import type { TabId, ClothingItem, Outfit } from './types';
+import type { TabId } from './types';
 import { useAuth } from './hooks/useAuth';
 import { useFirestoreSync } from './hooks/useFirestoreSync';
 import { useToast } from './hooks/useToast';

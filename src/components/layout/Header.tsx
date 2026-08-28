@@ -1,6 +1,6 @@
 import React from 'react';
 import type { User } from 'firebase/auth';
-import { SparklesIcon } from '../icons';
+
 
 interface HeaderProps {
   user: User | null;
